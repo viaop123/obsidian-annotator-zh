@@ -1,4 +1,5 @@
 import { clone, uuid } from './portable';
+import { settingsText as st } from './settings-i18n';
 import {
     areaFragment,
     areaOf,
@@ -10086,15 +10087,17 @@ class NativeSettings extends PluginSettingTab {
         };
 
         new Setting(root)
-            .setName('Highlight colours')
+            .setName(st('Highlight colours'))
             .setHeading()
             .setDesc(
-                'Give each colour a meaning, such as “Key idea” or “Question”. Names appear wherever a colour is chosen. The colours themselves follow your theme and can be changed with a CSS snippet or the Style Settings plugin.'
+                st(
+                    'Give each colour a meaning, such as “Key idea” or “Question”. Names appear wherever a colour is chosen. The colours themselves follow your theme and can be changed with a CSS snippet or the Style Settings plugin.'
+                )
             );
         for (const ink of INKS) {
-            const setting = new Setting(root).setName(INK_NAMES[ink]).addText(control =>
+            const setting = new Setting(root).setName(st(INK_NAMES[ink])).addText(control =>
                 control
-                    .setPlaceholder(INK_NAMES[ink])
+                    .setPlaceholder(st(INK_NAMES[ink]))
                     .setValue(plugin.inkLabels[ink] || '')
                     .onChange(value => save(plugin.setInkLabel(ink, value)))
             );
@@ -10104,32 +10107,36 @@ class NativeSettings extends PluginSettingTab {
             setting.nameEl.prepend(swatch);
         }
 
-        new Setting(root).setName('Writing notes').setHeading();
+        new Setting(root).setName(st('Writing notes')).setHeading();
         new Setting(root)
-            .setName('Where notes are written')
+            .setName(st('Where notes are written'))
             .setDesc(
-                'Beside the passage keeps what you highlighted in view and gives the note room; on a phone it is a sheet at the bottom of the screen.'
+                st(
+                    'Beside the passage keeps what you highlighted in view and gives the note room; on a phone it is a sheet at the bottom of the screen.'
+                )
             )
             .addDropdown(control =>
                 control
-                    .addOptions({ page: 'Beside the passage', sidebar: 'In the sidebar' })
+                    .addOptions({ page: st('Beside the passage'), sidebar: st('In the sidebar') })
                     .setValue(plugin.display.composer)
                     .onChange(value => save(plugin.setDisplay({ composer: value as 'page' | 'sidebar' })))
             );
 
         this.selectionKeySettings(root);
 
-        new Setting(root).setName('Sidebar').setHeading();
+        new Setting(root).setName(st('Sidebar')).setHeading();
         new Setting(root)
-            .setName('Compact cards')
-            .setDesc('Tighter spacing and shorter quotes, for long documents.')
+            .setName(st('Compact cards'))
+            .setDesc(st('Tighter spacing and shorter quotes, for long documents.'))
             .addToggle(control =>
                 control.setValue(plugin.display.compact).onChange(value => save(plugin.setDisplay({ compact: value })))
             );
         new Setting(root)
-            .setName('Open the sidebar when a source opens')
+            .setName(st('Open the sidebar when a source opens'))
             .setDesc(
-                'Brings the annotations forward whenever a PDF, book, page or video is opened from its note. When off, open them with the ribbon icon or the command "Show or hide the annotations sidebar"; following a link to an annotation still shows it.'
+                st(
+                    'Brings the annotations forward whenever a PDF, book, page or video is opened from its note. When off, open them with the ribbon icon or the command "Show or hide the annotations sidebar"; following a link to an annotation still shows it.'
+                )
             )
             .addToggle(control =>
                 control
@@ -10137,18 +10144,18 @@ class NativeSettings extends PluginSettingTab {
                     .onChange(value => save(plugin.setDisplay({ sidebarOnOpen: value })))
             );
         new Setting(root)
-            .setName('Always show card actions')
-            .setDesc('Show colour, edit, reply, link and delete under every card rather than on hover.')
+            .setName(st('Always show card actions'))
+            .setDesc(st('Show colour, edit, reply, link and delete under every card rather than on hover.'))
             .addToggle(control =>
                 control
                     .setValue(plugin.display.alwaysActions)
                     .onChange(value => save(plugin.setDisplay({ alwaysActions: value })))
             );
 
-        new Setting(root).setName('Annotation notes').setHeading();
+        new Setting(root).setName(st('Annotation notes')).setHeading();
         new Setting(root)
-            .setName('New annotation notes start with')
-            .setDesc('The heading under which a new annotation note keeps its annotations. Empty for none.')
+            .setName(st('New annotation notes start with'))
+            .setDesc(st('The heading under which a new annotation note keeps its annotations. Empty for none.'))
             .addText(control =>
                 control
                     .setPlaceholder(DEFAULT_NOTE_HEADING)
@@ -10156,9 +10163,11 @@ class NativeSettings extends PluginSettingTab {
                     .onChange(value => save(plugin.setDisplay({ noteHeading: value.slice(0, 200) })))
             );
         new Setting(root)
-            .setName('Template for new annotation notes')
+            .setName(st('Template for new annotation notes'))
             .setDesc(
-                'A note whose text a new annotation note starts as, instead of the heading: its properties are kept, and {{title}}, {{date}} and {{target}} are filled in. Annotations are added at the end.'
+                st(
+                    'A note whose text a new annotation note starts as, instead of the heading: its properties are kept, and {{title}}, {{date}} and {{target}} are filled in. Annotations are added at the end.'
+                )
             )
             .addText(control =>
                 control
@@ -10167,9 +10176,11 @@ class NativeSettings extends PluginSettingTab {
                     .onChange(value => save(plugin.setDisplay({ noteTemplate: value.slice(0, 400) })))
             );
         new Setting(root)
-            .setName('Write new annotations under this heading')
+            .setName(st('Write new annotations under this heading'))
             .setDesc(
-                'In any annotation note, new annotations go at the end of this heading\'s section, and the text after it stays after them. "## Highlights" means that level only, "Highlights" any level. A note without the heading gets it at its end. Empty: at the end of the note. Annotations a note already has stay where they are; the command "Move this note\'s annotations under the heading" moves them there.'
+                st(
+                    'In any annotation note, new annotations go at the end of this heading\'s section, and the text after it stays after them. "## Highlights" means that level only, "Highlights" any level. A note without the heading gets it at its end. Empty: at the end of the note. Annotations a note already has stay where they are; the command "Move this note\'s annotations under the heading" moves them there.'
+                )
             )
             .addText(control =>
                 control
@@ -10180,9 +10191,11 @@ class NativeSettings extends PluginSettingTab {
                     )
             );
         new Setting(root)
-            .setName('Give each annotation a heading')
+            .setName(st('Give each annotation a heading'))
             .setDesc(
-                'A new annotation gets a heading of its own in its note, made of the first words of its passage or note: for the Outline, folding, and links such as [[Paper notes#First words]]. Rename it from the card or in the note; it is deleted with its annotation. For a note written before, use the command "Add headings to this note\'s annotations". Off: headings are left alone.'
+                st(
+                    'A new annotation gets a heading of its own in its note, made of the first words of its passage or note: for the Outline, folding, and links such as [[Paper notes#First words]]. Rename it from the card or in the note; it is deleted with its annotation. For a note written before, use the command "Add headings to this note\'s annotations". Off: headings are left alone.'
+                )
             )
             .addToggle(control =>
                 control
@@ -10190,9 +10203,11 @@ class NativeSettings extends PluginSettingTab {
                     .onChange(value => save(plugin.setDisplay({ annotationHeadings: value })))
             );
         new Setting(root)
-            .setName('Level of annotation headings')
+            .setName(st('Level of annotation headings'))
             .setDesc(
-                "A heading of this level directly above an annotation is that annotation's. Use a level below the headings you write annotations under."
+                st(
+                    "A heading of this level directly above an annotation is that annotation's. Use a level below the headings you write annotations under."
+                )
             )
             .addDropdown(control =>
                 control
@@ -10203,18 +10218,20 @@ class NativeSettings extends PluginSettingTab {
         for (const [key, label, description] of [
             [
                 'highlightHighlightedText',
-                'Highlight quotes in the note',
-                'Wrap the quoted passage in ==highlight== marks inside the annotation note.'
+                st('Highlight quotes in the note'),
+                st('Wrap the quoted passage in ==highlight== marks inside the annotation note.')
             ],
             [
                 'includePrefix',
-                'Keep text before the quote',
-                'Show the words just before the passage in the annotation note, in italics. The note stores them either way, so the passage is found again if the source changes.'
+                st('Keep text before the quote'),
+                st(
+                    'Show the words just before the passage in the annotation note, in italics. The note stores them either way, so the passage is found again if the source changes.'
+                )
             ],
             [
                 'includePostfix',
-                'Keep text after the quote',
-                'Show the words just after the passage in the annotation note, in italics.'
+                st('Keep text after the quote'),
+                st('Show the words just after the passage in the annotation note, in italics.')
             ]
         ] as const)
             new Setting(root)
@@ -10227,9 +10244,11 @@ class NativeSettings extends PluginSettingTab {
                     })
                 );
         new Setting(root)
-            .setName('Keep reading progress in the note')
+            .setName(st('Keep reading progress in the note'))
             .setDesc(
-                'When a PDF, book or video is left, write where you were to its annotation note as the property annotation-progress ("12/340", "37%", "12:34"), for lists and Bases, and so that another device opens there. Off by default, because it changes the note each time.'
+                st(
+                    'When a PDF, book or video is left, write where you were to its annotation note as the property annotation-progress ("12/340", "37%", "12:34"), for lists and Bases, and so that another device opens there. Off by default, because it changes the note each time.'
+                )
             )
             .addToggle(control =>
                 control
@@ -10237,9 +10256,11 @@ class NativeSettings extends PluginSettingTab {
                     .onChange(value => save(plugin.setDisplay({ progressProperty: value })))
             );
         new Setting(root)
-            .setName('Fold annotation data in Live Preview')
+            .setName(st('Fold annotation data in Live Preview'))
             .setDesc(
-                'In an annotation note, shows each annotation as its passage, link, note and tags, with the stored data folded to a small mark. Put the cursor in an annotation to see it as written. Nothing in the file changes; Source mode shows everything.'
+                st(
+                    'In an annotation note, shows each annotation as its passage, link, note and tags, with the stored data folded to a small mark. Put the cursor in an annotation to see it as written. Nothing in the file changes; Source mode shows everything.'
+                )
             )
             .addToggle(control =>
                 control.setValue(plugin.display.foldData).onChange(value => {
@@ -10248,9 +10269,11 @@ class NativeSettings extends PluginSettingTab {
                 })
             );
         new Setting(root)
-            .setName('Show titles from this property')
+            .setName(st('Show titles from this property'))
             .setDesc(
-                'Where Annotator names an annotation note or its source (the tab of a PDF, book, page or video, the sidebar, the list of annotated sources, the search of all annotations, Citations), it says what this property of the note says, such as title, instead of the file\'s name. "Add the PDF\'s details" fills in title. A note without it is named as before. Only what is shown changes: no file is renamed and no note is changed. Empty: file names.'
+                st(
+                    'Where Annotator names an annotation note or its source (the tab of a PDF, book, page or video, the sidebar, the list of annotated sources, the search of all annotations, Citations), it says what this property of the note says, such as title, instead of the file\'s name. "Add the PDF\'s details" fills in title. A note without it is named as before. Only what is shown changes: no file is renamed and no note is changed. Empty: file names.'
+                )
             )
             .addText(control =>
                 control
@@ -10259,11 +10282,13 @@ class NativeSettings extends PluginSettingTab {
                     .onChange(value => save(plugin.setDisplay({ titleProperty: titlePropertyName(value) })))
             );
 
-        new Setting(root).setName('Copying and exporting').setHeading();
+        new Setting(root).setName(st('Copying and exporting')).setHeading();
         new Setting(root)
-            .setName('Copied link')
+            .setName(st('Copied link'))
             .setDesc(
-                'What is copied or dragged from a card\'s link button. Empty copies the plain link. A template may use {{link}} (the plain link) with {{quote}}, {{note}}, {{location}}, {{date}}, {{tags}}, {{title}}, {{author}} and {{year}}: for example "{{quote}}" ({{author}} {{year}}, {{location}}) {{link}}'
+                st(
+                    'What is copied or dragged from a card\'s link button. Empty copies the plain link. A template may use {{link}} (the plain link) with {{quote}}, {{note}}, {{location}}, {{date}}, {{tags}}, {{title}}, {{author}} and {{year}}: for example "{{quote}}" ({{author}} {{year}}, {{location}}) {{link}}'
+                )
             )
             .addTextArea(control =>
                 control
@@ -10272,14 +10297,14 @@ class NativeSettings extends PluginSettingTab {
                     .onChange(value => save(plugin.setDisplay({ linkTemplate: value.slice(0, 2000) })))
             );
         new Setting(root)
-            .setName('Export style')
-            .setDesc('How “Copy as Markdown” and “Export summary note” write each annotation.')
+            .setName(st('Export style'))
+            .setDesc(st('How “Copy as Markdown” and “Export summary note” write each annotation.'))
             .addDropdown(control =>
                 control
                     .addOptions({
-                        callout: 'Callouts, tinted with the highlight colour',
-                        plain: 'Plain block quotes',
-                        template: 'My own template'
+                        callout: st('Callouts, tinted with the highlight colour'),
+                        plain: st('Plain block quotes'),
+                        template: st('My own template')
                     })
                     .setValue(plugin.summary.style)
                     .onChange(value => {
@@ -10292,9 +10317,11 @@ class NativeSettings extends PluginSettingTab {
             );
         if (plugin.summary.style === 'template') {
             const template = new Setting(root)
-                .setName('Template')
+                .setName(st('Template'))
                 .setDesc(
-                    'Written once per annotation. {{quoted}} is the passage as a block quote (for a marked area, its picture) and {{quote}} the passage on one line; also {{note}}, {{image}}, {{kind}}, {{title}}, {{author}}, {{year}}, {{location}}, {{link}}, {{colour}}, {{tags}} and {{date}}.'
+                    st(
+                        'Written once per annotation. {{quoted}} is the passage as a block quote (for a marked area, its picture) and {{quote}} the passage on one line; also {{note}}, {{image}}, {{kind}}, {{title}}, {{author}}, {{year}}, {{location}}, {{link}}, {{colour}}, {{tags}} and {{date}}.'
+                    )
                 )
                 .addTextArea(control => {
                     control
@@ -10307,19 +10334,21 @@ class NativeSettings extends PluginSettingTab {
             template.settingEl.addClass('annotator-template-setting');
         }
         new Setting(root)
-            .setName('Link exports back to the passage')
-            .setDesc('Each exported annotation links to its place in the source.')
+            .setName(st('Link exports back to the passage'))
+            .setDesc(st('Each exported annotation links to its place in the source.'))
             .addToggle(control =>
                 control
                     .setValue(plugin.summary.links)
                     .onChange(value => save(plugin.setSummary({ ...plugin.summary, links: value })))
             );
 
-        new Setting(root).setName('Opening').setHeading();
+        new Setting(root).setName(st('Opening')).setHeading();
         new Setting(root)
-            .setName('Open annotation notes in the reader')
+            .setName(st('Open annotation notes in the reader'))
             .setDesc(
-                'Opening a note with an annotation-target shows its source with highlights. Off, such notes open as ordinary Markdown.'
+                st(
+                    'Opening a note with an annotation-target shows its source with highlights. Off, such notes open as ordinary Markdown.'
+                )
             )
             .addToggle(control =>
                 control.setValue(plugin.autoOpen).onChange(value => {
@@ -10328,9 +10357,11 @@ class NativeSettings extends PluginSettingTab {
                 })
             );
         new Setting(root)
-            .setName('Default target folders')
+            .setName(st('Default target folders'))
             .setDesc(
-                "Where an annotation-target that does not resolve on its own is looked for: one folder to a line, tried in order. A folder outside the vault is asked about before it is read. Several lines let one synced setting name the library folder of each computer. A folder may be written from the vault's own folder (../papers/), which names the same place on every computer the vault syncs to."
+                st(
+                    "Where an annotation-target that does not resolve on its own is looked for: one folder to a line, tried in order. A folder outside the vault is asked about before it is read. Several lines let one synced setting name the library folder of each computer. A folder may be written from the vault's own folder (../papers/), which names the same place on every computer the vault syncs to."
+                )
             )
             .addTextArea(control =>
                 control
@@ -10349,9 +10380,11 @@ class NativeSettings extends PluginSettingTab {
             writeAlias?.setDisabled(!plugin.display.targetAlias);
         };
         new Setting(root)
-            .setName('Also read the source from this property')
+            .setName(st('Also read the source from this property'))
             .setDesc(
-                'A note names its source in the property annotation-target. If your notes already name it in another property (source, pdf, file), write that name here: a note without annotation-target is then read by it.'
+                st(
+                    'A note names its source in the property annotation-target. If your notes already name it in another property (source, pdf, file), write that name here: a note without annotation-target is then read by it.'
+                )
             )
             .addText(control =>
                 control
@@ -10363,9 +10396,11 @@ class NativeSettings extends PluginSettingTab {
                     })
             );
         new Setting(root)
-            .setName('Write new notes with this property instead')
+            .setName(st('Write new notes with this property instead'))
             .setDesc(
-                'New annotation notes, and notes for some pages of a PDF, name their source in the property above instead of annotation-target. Off is recommended: annotation-target is read by Annotator 0.2, by other devices and by other tools. A note written this way is read only by Annotator 0.3.2 and later with the same property set above, and not by Annotator 0.2.'
+                st(
+                    'New annotation notes, and notes for some pages of a PDF, name their source in the property above instead of annotation-target. Off is recommended: annotation-target is read by Annotator 0.2, by other devices and by other tools. A note written this way is read only by Annotator 0.3.2 and later with the same property set above, and not by Annotator 0.2.'
+                )
             )
             .addToggle(control => {
                 writeAlias = control;
@@ -10377,11 +10412,13 @@ class NativeSettings extends PluginSettingTab {
                 });
             });
 
-        new Setting(root).setName('Sources outside the vault').setHeading();
+        new Setting(root).setName(st('Sources outside the vault')).setHeading();
         new Setting(root)
-            .setName('Copy outside sources into the vault')
+            .setName(st('Copy outside sources into the vault'))
             .setDesc(
-                "Off: a note's source outside the vault (a web address, a file on this computer, a Zotero, Calibre or DEVONthink link) is read where it is, and nothing is put into the vault; Annotate a copy in the vault makes a copy when you want one. On: every such source is copied into the folder for copies (below) the first time, as Annotator 0.3 did. Copies already made are read either way. Phones and tablets always read a copy, and so does Obsidian before 1.14.4."
+                st(
+                    "Off: a note's source outside the vault (a web address, a file on this computer, a Zotero, Calibre or DEVONthink link) is read where it is, and nothing is put into the vault; Annotate a copy in the vault makes a copy when you want one. On: every such source is copied into the folder for copies (below) the first time, as Annotator 0.3 did. Copies already made are read either way. Phones and tablets always read a copy, and so does Obsidian before 1.14.4."
+                )
             )
             .addToggle(control =>
                 control
@@ -10389,9 +10426,11 @@ class NativeSettings extends PluginSettingTab {
                     .onChange(value => save(plugin.setDisplay({ copySources: value })))
             );
         new Setting(root)
-            .setName('Folder for copies')
+            .setName(st('Folder for copies'))
             .setDesc(
-                'Where Annotate a copy in the vault, and every other copy of a source from outside the vault, is made. Copies already made stay where they are and are still found there: nothing is moved. Obsidian’s attachment folder is offered first where it is one folder.'
+                st(
+                    'Where Annotate a copy in the vault, and every other copy of a source from outside the vault, is made. Copies already made stay where they are and are still found there: nothing is moved. Obsidian’s attachment folder is offered first where it is one folder.'
+                )
             )
             .addText(control => {
                 control.setPlaceholder(DEFAULT_COPY_FOLDER).setValue(plugin.display.copyFolder);
@@ -10402,9 +10441,11 @@ class NativeSettings extends PluginSettingTab {
                 control.inputEl.addEventListener('blur', () => control.setValue(plugin.display.copyFolder));
             });
         new Setting(root)
-            .setName('Zotero data folder')
+            .setName(st('Zotero data folder'))
             .setDesc(
-                'A note may name its source by a Zotero link to a PDF (zotero://open-pdf/library/items/…). The file is looked for in this folder, under "storage". Leave empty for Zotero\'s usual place, the folder Zotero in your home folder. Computers only.'
+                st(
+                    'A note may name its source by a Zotero link to a PDF (zotero://open-pdf/library/items/…). The file is looked for in this folder, under "storage". Leave empty for Zotero\'s usual place, the folder Zotero in your home folder. Computers only.'
+                )
             )
             .addText(control =>
                 control
@@ -10413,9 +10454,11 @@ class NativeSettings extends PluginSettingTab {
                     .onChange(value => save(plugin.setDisplay({ zoteroFolder: value.trim().slice(0, 1000) })))
             );
         new Setting(root)
-            .setName('Calibre library folders')
+            .setName(st('Calibre library folders'))
             .setDesc(
-                "A note may name its source by a Calibre book link (calibre://show-book/Library/42). Name each library's folder here, one to a line: the book is looked for there, and its EPUB or PDF is the source. Computers only."
+                st(
+                    "A note may name its source by a Calibre book link (calibre://show-book/Library/42). Name each library's folder here, one to a line: the book is looked for there, and its EPUB or PDF is the source. Computers only."
+                )
             )
             .addTextArea(control =>
                 control
@@ -10424,27 +10467,32 @@ class NativeSettings extends PluginSettingTab {
                     .onChange(value => save(plugin.setDisplay({ calibreLibraries: value.slice(0, 4000) })))
             );
 
-        new Setting(root).setName('Reading').setHeading();
+        new Setting(root).setName(st('Reading')).setHeading();
         new Setting(root)
-            .setName('Page appearance')
-            .setDesc('For PDFs and books.')
+            .setName(st('Page appearance'))
+            .setDesc(st('For PDFs and books.'))
             .addDropdown(control =>
                 control
-                    .addOptions({ system: 'Follow Obsidian', light: 'Light', dark: 'Dark', sepia: 'Sepia' })
+                    .addOptions({
+                        system: st('Follow Obsidian'),
+                        light: st('Light'),
+                        dark: st('Dark'),
+                        sepia: st('Sepia')
+                    })
                     .setValue(plugin.reader.theme)
                     .onChange(value =>
                         save(plugin.setReader({ ...plugin.reader, theme: value as ReaderPreferences['theme'] }))
                     )
             );
-        new Setting(root).setName('Book layout').addDropdown(control =>
+        new Setting(root).setName(st('Book layout')).addDropdown(control =>
             control
-                .addOptions({ scroll: 'Continuous scroll', pagination: 'Pages' })
+                .addOptions({ scroll: st('Continuous scroll'), pagination: st('Pages') })
                 .setValue(plugin.reader.readingMode)
                 .onChange(value =>
                     save(plugin.setReader({ ...plugin.reader, readingMode: value as ReaderPreferences['readingMode'] }))
                 )
         );
-        new Setting(root).setName('Book text size').addSlider(control =>
+        new Setting(root).setName(st('Book text size')).addSlider(control =>
             control
                 .setLimits(50, 200, 5)
                 .setValue(plugin.reader.fontSize)
@@ -10452,9 +10500,9 @@ class NativeSettings extends PluginSettingTab {
                 .onChange(value => save(plugin.setReader({ ...plugin.reader, fontSize: value })))
         );
         for (const [key, label, max] of [
-            ['brightness', 'Dark page brightness', 150],
-            ['contrast', 'Dark page contrast', 150],
-            ['sepia', 'Dark page warmth', 100]
+            ['brightness', st('Dark page brightness'), 150],
+            ['contrast', st('Dark page contrast'), 150],
+            ['sepia', st('Dark page warmth'), 100]
         ] as const)
             new Setting(root).setName(label).addSlider(control =>
                 control
@@ -10466,9 +10514,11 @@ class NativeSettings extends PluginSettingTab {
         // Annotating an embed needs its highlights shown; while they are not, the choice below is kept as it was made.
         let annotateEmbeds: { setDisabled(off: boolean): unknown } | null = null;
         new Setting(root)
-            .setName('Show highlights in embedded PDFs')
+            .setName(st('Show highlights in embedded PDFs'))
             .setDesc(
-                'A PDF embedded in a note or placed on a Canvas is shown with its highlights, and a click on one opens it in the sidebar. Applies to embeds shown from now on.'
+                st(
+                    'A PDF embedded in a note or placed on a Canvas is shown with its highlights, and a click on one opens it in the sidebar. Applies to embeds shown from now on.'
+                )
             )
             .addToggle(control =>
                 control.setValue(plugin.display.embeddedHighlights).onChange(value => {
@@ -10478,9 +10528,11 @@ class NativeSettings extends PluginSettingTab {
                 })
             );
         new Setting(root)
-            .setName('Annotate in embedded PDFs')
+            .setName(st('Annotate in embedded PDFs'))
             .setDesc(
-                "Select text in an embedded PDF to highlight it or write a note, with the same bar as in the PDF's tab; right-click a highlight to change its colour, add a note or delete it. What you make goes into the PDF's annotation note, not the note the PDF is embedded in. On a Canvas, select the card first. Off: embeds only show their highlights."
+                st(
+                    "Select text in an embedded PDF to highlight it or write a note, with the same bar as in the PDF's tab; right-click a highlight to change its colour, add a note or delete it. What you make goes into the PDF's annotation note, not the note the PDF is embedded in. On a Canvas, select the card first. Off: embeds only show their highlights."
+                )
             )
             .addToggle(control => {
                 annotateEmbeds = control;
@@ -10493,8 +10545,10 @@ class NativeSettings extends PluginSettingTab {
                     });
             });
         new Setting(root)
-            .setName('Folder for reference notes')
-            .setDesc('Where the Citations view makes a note for a cited work. Empty: where Obsidian puts new notes.')
+            .setName(st('Folder for reference notes'))
+            .setDesc(
+                st('Where the Citations view makes a note for a cited work. Empty: where Obsidian puts new notes.')
+            )
             .addText(control =>
                 control
                     .setPlaceholder('References')
@@ -10505,10 +10559,12 @@ class NativeSettings extends PluginSettingTab {
         this.openWith(root);
 
         new Setting(root)
-            .setName('Text recognition')
+            .setName(st('Text recognition'))
             .setHeading()
             .setDesc(
-                'Recognising the text of a scanned PDF needs the recogniser and the data of a language. They are not part of the plugin: each is fetched the first time it is needed, when you say so, kept in the plugin\u2019s folder and checked before every use. Removing one frees its space; it is fetched again when it is next needed.'
+                st(
+                    'Recognising the text of a scanned PDF needs the recogniser and the data of a language. They are not part of the plugin: each is fetched the first time it is needed, when you say so, kept in the plugin\u2019s folder and checked before every use. Removing one frees its space; it is fetched again when it is next needed.'
+                )
             );
         const files = root.createDiv({ cls: 'annotator-scan-files' });
         const megabytes = (bytes: number) => `${(bytes / 1e6).toFixed(1)} MB`;
@@ -10517,16 +10573,16 @@ class NativeSettings extends PluginSettingTab {
                 held => {
                     files.empty();
                     for (const { file, held: there } of held) {
-                        const row = new Setting(files)
-                            .setName(file.what)
-                            .setDesc(
-                                there
-                                    ? `On this device, ${megabytes(file.bytes)}.`
-                                    : `Not on this device (${megabytes(file.bytes)} when fetched).`
-                            );
+                        const row = new Setting(files).setName(st(file.what)).setDesc(
+                            there
+                                ? st('On this device, {size}.', { size: megabytes(file.bytes) })
+                                : st('Not on this device ({size} when fetched).', {
+                                      size: megabytes(file.bytes)
+                                  })
+                        );
                         if (there)
                             row.addButton(control =>
-                                control.setButtonText('Remove').onClick(() => {
+                                control.setButtonText(st('Remove')).onClick(() => {
                                     void plugin.removeScanFile(file).then(list, error => new Notice(noticeText(error)));
                                 })
                             );
@@ -10538,15 +10594,19 @@ class NativeSettings extends PluginSettingTab {
         list();
 
         new Setting(root)
-            .setName('Coming from Annotator 0.2')
+            .setName(st('Coming from Annotator 0.2'))
             .setHeading()
-            .setDesc('Existing annotation notes are already in the format this reader uses. Nothing needs converting.');
+            .setDesc(
+                st('Existing annotation notes are already in the format this reader uses. Nothing needs converting.')
+            );
         new Setting(root)
-            .setName('Check my annotation notes')
-            .setDesc('Counts your annotated sources and highlights and lists anything that cannot be read. Read-only.')
+            .setName(st('Check my annotation notes'))
+            .setDesc(
+                st('Counts your annotated sources and highlights and lists anything that cannot be read. Read-only.')
+            )
             .addButton(control =>
                 control
-                    .setButtonText('Check')
+                    .setButtonText(st('Check'))
                     .setCta()
                     .onClick(() => plugin.openMigration())
             );
@@ -10555,25 +10615,27 @@ class NativeSettings extends PluginSettingTab {
     private selectionKeySettings(root: HTMLElement) {
         const plugin = this.plugin;
         new Setting(root)
-            .setName('Keys on a selection')
+            .setName(st('Keys on a selection'))
             .setHeading()
             .setDesc(
-                'While the bar by a selection is open, these keys act on it; 1–6 pick a colour and Escape closes it. With Shift, the mark key also copies the link (with a letter key). Each action is also a command, which Obsidian\u2019s Hotkeys settings can give any key.'
+                st(
+                    'While the bar by a selection is open, these keys act on it; 1–6 pick a colour and Escape closes it. With Shift, the mark key also copies the link (with a letter key). Each action is also a command, which Obsidian\u2019s Hotkeys settings can give any key.'
+                )
             );
         for (const name of SELECTION_KEY_NAMES) {
-            const setting = new Setting(root).setName(SELECTION_KEY_LABELS[name]);
+            const setting = new Setting(root).setName(st(SELECTION_KEY_LABELS[name]));
             setting.settingEl.addClass('annotator-key-setting');
             // Why a key typed here is not taken, said where the setting is described and read out as it changes.
             const said = setting.descEl.createEl('span', { cls: 'annotator-key-problem', attr: { role: 'status' } });
             setting.addText(control => {
                 const input = control.inputEl;
                 const show = (problem: string | null) => {
-                    said.textContent = problem || '';
+                    said.textContent = problem ? st(problem) : '';
                     input.classList.toggle('is-invalid', !!problem);
                     input.setAttribute('aria-invalid', problem ? 'true' : 'false');
                 };
                 input.classList.add('annotator-key-field');
-                input.setAttribute('aria-label', `Key: ${SELECTION_KEY_LABELS[name]}`);
+                input.setAttribute('aria-label', st('Key: {action}', { action: st(SELECTION_KEY_LABELS[name]) }));
                 input.spellcheck = false;
                 input.autocapitalize = 'off';
                 control
@@ -10590,10 +10652,10 @@ class NativeSettings extends PluginSettingTab {
             });
         }
         new Setting(root)
-            .setName('Back to H, A and S')
-            .setDesc('The keys the bar had to begin with.')
+            .setName(st('Back to H, A and S'))
+            .setDesc(st('The keys the bar had to begin with.'))
             .addButton(control =>
-                control.setButtonText('Reset').onClick(() => {
+                control.setButtonText(st('Reset')).onClick(() => {
                     void plugin.resetSelectionKeys().then(
                         () => this.display(),
                         error => new Notice(noticeText(error))
@@ -10610,8 +10672,8 @@ class NativeSettings extends PluginSettingTab {
             vault = plugin.openVaultName();
         const copy = (words: string) => {
             void navigator.clipboard.writeText(words).then(
-                () => new Notice('Copied.'),
-                () => new Notice('Could not copy. Select the text and copy it by hand.')
+                () => new Notice(st('Copied.')),
+                () => new Notice(st('Could not copy. Select the text and copy it by hand.'))
             );
         };
         // The text is shown across the whole row, under what it is for: an address is not cut off.
@@ -10624,19 +10686,23 @@ class NativeSettings extends PluginSettingTab {
             box.readOnly = true;
             box.rows = address ? 2 : Math.min(8, words.split('\n').length);
             box.spellcheck = false;
-            box.setAttribute('aria-label', setting.nameEl.textContent || 'Text to copy');
-            setting.addButton(control => control.setButtonText('Copy').onClick(() => copy(words)));
+            box.setAttribute('aria-label', setting.nameEl.textContent || st('Text to copy'));
+            setting.addButton(control => control.setButtonText(st('Copy')).onClick(() => copy(words)));
         };
-        const heading = new Setting(root).setName('Open from outside Obsidian').setHeading();
+        const heading = new Setting(root).setName(st('Open from outside Obsidian')).setHeading();
         if (Platform.isMobile) {
             heading.setDesc(
-                'On a phone or tablet, Annotator reads a PDF or a book from the vault only: it cannot be handed over from the file manager or a share sheet where it is, so it is copied into the vault first. Share a PDF to Obsidian and choose Import into vault, then Open in Annotator. A book is saved into the vault’s folder with the file manager. The README says how, under “Open a file from outside Obsidian”.'
+                st(
+                    'On a phone or tablet, Annotator reads a PDF or a book from the vault only: it cannot be handed over from the file manager or a share sheet where it is, so it is copied into the vault first. Share a PDF to Obsidian and choose Import into vault, then Open in Annotator. A book is saved into the vault’s folder with the file manager. The README says how, under “Open a file from outside Obsidian”.'
+                )
             );
             shown(
                 new Setting(root)
-                    .setName('Address for a file in this vault')
+                    .setName(st('Address for a file in this vault'))
                     .setDesc(
-                        'For a Shortcut or an automation: first save the PDF or book into this vault, then open this address with the file’s path in the vault added to it, URL-encoded.'
+                        st(
+                            'For a Shortcut or an automation: first save the PDF or book into this vault, then open this address with the file’s path in the vault added to it, URL-encoded.'
+                        )
                     ),
                 fileAddress({ vault, key: '' }),
                 true
@@ -10645,7 +10711,9 @@ class NativeSettings extends PluginSettingTab {
             return;
         }
         heading.setDesc(
-            'A PDF or a book can be handed to Annotator from the file manager, with Open with, and a page from your browser with the bookmarklet. The README says how for each system, under “Open a file from outside Obsidian”.'
+            st(
+                'A PDF or a book can be handed to Annotator from the file manager, with Open with, and a page from your browser with the bookmarklet. The README says how for each system, under “Open a file from outside Obsidian”.'
+            )
         );
         const place = plugin.openWithPlace(),
             system = place?.system ?? (Platform.isMacOS ? 'mac' : Platform.isWin ? 'windows' : 'linux'),
@@ -10653,15 +10721,19 @@ class NativeSettings extends PluginSettingTab {
         manual.className = 'annotator-open-with-manual';
         if (place) this.openWithApp(root, system, manual);
         const key = new Setting(root)
-            .setName('This computer’s key')
+            .setName(st('This computer’s key'))
             .setDesc(
                 device.key
-                    ? 'A file outside the vault is opened only when the request carries this key, which a web page cannot know. The key is kept on this computer only, and is written into Open with Annotator and the recipe.'
-                    : 'A file outside the vault is opened only when the request carries a key that this computer made, which a web page cannot know. Install makes one; until there is one, no request from outside is followed to a file outside the vault.'
+                    ? st(
+                          'A file outside the vault is opened only when the request carries this key, which a web page cannot know. The key is kept on this computer only, and is written into Open with Annotator and the recipe.'
+                      )
+                    : st(
+                          'A file outside the vault is opened only when the request carries a key that this computer made, which a web page cannot know. Install makes one; until there is one, no request from outside is followed to a file outside the vault.'
+                      )
             );
         if (!device.key)
             key.addButton(control => {
-                control.setButtonText('Make a key').onClick(() => {
+                control.setButtonText(st('Make a key')).onClick(() => {
                     plugin.newOpenKey();
                     this.display();
                 });
@@ -10670,8 +10742,8 @@ class NativeSettings extends PluginSettingTab {
         else {
             key.addButton(control =>
                 control
-                    .setButtonText('New key')
-                    .setTooltip('Open with Annotator and recipes made with the old key stop being answered.')
+                    .setButtonText(st('New key'))
+                    .setTooltip(st('Open with Annotator and recipes made with the old key stop being answered.'))
                     .onClick(() => {
                         plugin.newOpenKey();
                         this.display();
@@ -10679,7 +10751,7 @@ class NativeSettings extends PluginSettingTab {
             );
             key.addButton(control =>
                 control
-                    .setButtonText('Remove')
+                    .setButtonText(st('Remove'))
                     .setWarning()
                     .onClick(() => {
                         plugin.dropOpenKey();
@@ -10689,29 +10761,37 @@ class NativeSettings extends PluginSettingTab {
         }
         if (device.key) {
             root.append(manual);
-            manual.createEl('summary', { text: 'Do it yourself' });
+            manual.createEl('summary', { text: st('Do it yourself') });
             const values = { vault, key: device.key },
                 recipe =
                     system === 'mac'
                         ? {
                               words: macRecipe(values),
-                              how: 'What Install does, to paste into Terminal yourself. It makes “Open with Annotator” in the Applications folder of your home folder, from a script you can read; nothing is downloaded.'
+                              how: st(
+                                  'What Install does, to paste into Terminal yourself. It makes “Open with Annotator” in the Applications folder of your home folder, from a script you can read; nothing is downloaded.'
+                              )
                           }
                         : system === 'windows'
                           ? {
                                 words: windowsRecipe(values),
-                                how: 'What Install does, to paste into a PowerShell window yourself. It adds “Open with Annotator” for PDFs and books, for your account only.'
+                                how: st(
+                                    'What Install does, to paste into a PowerShell window yourself. It adds “Open with Annotator” for PDFs and books, for your account only.'
+                                )
                             }
                           : {
                                 words: linuxRecipe(values),
-                                how: 'What Install does, to paste into a terminal yourself. It writes a small script and a desktop entry under your home folder.'
+                                how: st(
+                                    'What Install does, to paste into a terminal yourself. It writes a small script and a desktop entry under your home folder.'
+                                )
                             };
-            shown(new Setting(manual).setName('Recipe for this computer').setDesc(recipe.how), recipe.words);
+            shown(new Setting(manual).setName(st('Recipe for this computer')).setDesc(recipe.how), recipe.words);
             shown(
                 new Setting(manual)
-                    .setName('The address itself')
+                    .setName(st('The address itself'))
                     .setDesc(
-                        'For a script of your own: this address, with the full path of the PDF or book added to it, URL-encoded.'
+                        st(
+                            'For a script of your own: this address, with the full path of the PDF or book added to it, URL-encoded.'
+                        )
                     ),
                 sourceAddress(values),
                 true
@@ -10725,15 +10805,17 @@ class NativeSettings extends PluginSettingTab {
     private openFolders(root: HTMLElement, device: OpenDevice) {
         const plugin = this.plugin;
         const folders = new Setting(root)
-            .setName('Folders files are copied from without a question')
+            .setName(st('Folders files are copied from without a question'))
             .setDesc(
                 device.folders.length
-                    ? `${device.folders.map(folder => shownPath(folder, 80)).join('  ·  ')}${plugin.opensInPlace() ? '. Files are read where they are here, so this list is used only where they are copied in.' : ''}`
-                    : 'None yet. The first file from a folder is asked about, and “Always from this folder” adds the folder here.'
+                    ? `${device.folders.map(folder => shownPath(folder, 80)).join('  ·  ')}${plugin.opensInPlace() ? st('. Files are read where they are here, so this list is used only where they are copied in.') : ''}`
+                    : st(
+                          'None yet. The first file from a folder is asked about, and “Always from this folder” adds the folder here.'
+                      )
             );
         if (device.folders.length)
             folders.addButton(control =>
-                control.setButtonText('Forget them').onClick(() => {
+                control.setButtonText(st('Forget them')).onClick(() => {
                     plugin.forgetOpenFolders();
                     this.display();
                 })
@@ -10746,25 +10828,33 @@ class NativeSettings extends PluginSettingTab {
      */
     private bookmarkletSetting(root: HTMLElement) {
         const code = bookmarklet(this.app.vault.getName?.() || ''),
-            name = 'Annotate in Annotator';
+            name = st('Annotate in Annotator');
         const setting = new Setting(root)
-            .setName('Bookmarklet')
+            .setName(st('Bookmarklet'))
             .setDesc(
                 Platform.isMobile
-                    ? 'Hands the page your browser shows to Annotator: a PDF, a book, a video or a web page. Phone browsers make bookmarklets awkward: make a bookmark of any page, then change its address to the text below (Copy copies it); Annotator then asks for a press in Obsidian before it fetches anything. On Android, Share in the browser, then Obsidian, then Annotate in Annotator, is easier, and needs no press.'
-                    : 'Drag the link to your browser’s bookmarks bar. On any page, it hands the page to Annotator: a PDF, a book, a video or a web page. Annotator asks for a press in Obsidian before it fetches anything. If your browser does not take the link, make a bookmark and give it the text below as its address: Copy copies it.'
+                    ? st(
+                          'Hands the page your browser shows to Annotator: a PDF, a book, a video or a web page. Phone browsers make bookmarklets awkward: make a bookmark of any page, then change its address to the text below (Copy copies it); Annotator then asks for a press in Obsidian before it fetches anything. On Android, Share in the browser, then Obsidian, then Annotate in Annotator, is easier, and needs no press.'
+                      )
+                    : st(
+                          'Drag the link to your browser’s bookmarks bar. On any page, it hands the page to Annotator: a PDF, a book, a video or a web page. Annotator asks for a press in Obsidian before it fetches anything. If your browser does not take the link, make a bookmark and give it the text below as its address: Copy copies it.'
+                      )
             );
         setting.settingEl.addClass('annotator-open-with-block', 'annotator-bookmarklet');
         if (!Platform.isMobile) {
             const link = setting.controlEl.createEl('a', {
                 cls: 'annotator-bookmarklet-link',
                 text: name,
-                attr: { href: code, draggable: 'true', 'aria-label': `${name}: drag to your bookmarks bar` }
+                attr: {
+                    href: code,
+                    draggable: 'true',
+                    'aria-label': st('{name}: drag to your bookmarks bar', { name })
+                }
             });
             // Pressed here it would run in Obsidian itself: only dragging it away does anything.
             link.addEventListener('click', event => {
                 event.preventDefault();
-                new Notice('Drag this link to your browser’s bookmarks bar.');
+                new Notice(st('Drag this link to your browser’s bookmarks bar.'));
             });
             link.addEventListener('dragstart', event => {
                 event.dataTransfer?.setData('text/uri-list', code);
@@ -10776,19 +10866,19 @@ class NativeSettings extends PluginSettingTab {
         // browser that does not take the link by dragging (and for a phone, where nothing can be dragged).
         setting.addButton(control =>
             control
-                .setButtonText('Copy')
-                .setTooltip('Copy the bookmarklet, to paste as a new bookmark’s address')
+                .setButtonText(st('Copy'))
+                .setTooltip(st('Copy the bookmarklet, to paste as a new bookmark’s address'))
                 .onClick(() => {
                     void this.writeClipboard(code).then(
-                        () => new Notice('Copied. Paste it as the address of a new bookmark.'),
-                        () => new Notice('Could not copy. Select the text and copy it by hand.')
+                        () => new Notice(st('Copied. Paste it as the address of a new bookmark.')),
+                        () => new Notice(st('Could not copy. Select the text and copy it by hand.'))
                     );
                 })
         );
         setting.controlEl.createEl('code', {
             cls: 'annotator-bookmarklet-code',
             text: code,
-            attr: { 'aria-label': 'The bookmarklet’s address' }
+            attr: { 'aria-label': st('The bookmarklet’s address') }
         });
     }
     /** Puts words on the clipboard when the reader presses Copy. Replaceable (tests). */
@@ -10796,13 +10886,25 @@ class NativeSettings extends PluginSettingTab {
     /** The row with Install and Uninstall, and what is there now. */
     private openWithApp(root: HTMLElement, system: 'mac' | 'windows' | 'linux', manual: HTMLDetailsElement) {
         const plugin = this.plugin,
-            row = new Setting(root).setName('Open with Annotator').setClass('annotator-open-with-app'),
+            row = new Setting(root).setName(st('Open with Annotator')).setClass('annotator-open-with-app'),
             about = row.descEl.createDiv(),
             state = row.descEl.createDiv({ cls: 'annotator-open-with-state', attr: { role: 'status' } }),
             outcome = this.openWithSaid;
         this.openWithSaid = null;
         about.setText(
-            `Adds “Open with Annotator” to ${system === 'mac' ? 'Finder’s' : system === 'windows' ? 'Explorer’s' : 'your file manager’s'} Open with, for PDFs and books, for this vault. ${plugin.opensInPlace() ? 'A file opened with it is read where it is, with a note made for it where new notes go.' : 'A file opened with it is copied into the vault, with a note made for it.'} Nothing is downloaded.`
+            st(
+                'Adds “Open with Annotator” to {manager} Open with, for PDFs and books, for this vault. {reading} Nothing is downloaded.',
+                {
+                    manager: st(
+                        system === 'mac' ? 'Finder’s' : system === 'windows' ? 'Explorer’s' : 'your file manager’s'
+                    ),
+                    reading: st(
+                        plugin.opensInPlace()
+                            ? 'A file opened with it is read where it is, with a note made for it where new notes go.'
+                            : 'A file opened with it is copied into the vault, with a note made for it.'
+                    )
+                }
+            )
         );
         const say = (text: string, warning = false) => {
             state.textContent = text;
@@ -10811,23 +10913,30 @@ class NativeSettings extends PluginSettingTab {
         const buttons: { setDisabled(off: boolean): unknown }[] = [];
         const press = (installing: boolean) => {
             for (const button of buttons) button.setDisabled(true);
-            say(installing ? 'Installing…' : 'Uninstalling…');
+            say(installing ? st('Installing…') : st('Uninstalling…'));
             void (installing ? plugin.installOpenWith() : plugin.uninstallOpenWith()).then(
                 () => {
                     this.openWithSaid = {
                         text: installing
-                            ? `Installed. ${OPEN_WITH_DEFAULT[system]}`
-                            : `Uninstalled. ${OPEN_WITH_GONE[system]}`,
+                            ? st('Installed. {next}', { next: st(OPEN_WITH_DEFAULT[system]) })
+                            : st('Uninstalled. {next}', { next: st(OPEN_WITH_GONE[system]) }),
                         warning: false
                     };
                     new Notice(
-                        installing ? '“Open with Annotator” is installed.' : '“Open with Annotator” is uninstalled.'
+                        installing
+                            ? st('“Open with Annotator” is installed.')
+                            : st('“Open with Annotator” is uninstalled.')
                     );
                     this.display();
                 },
                 error => {
                     this.openWithSaid = {
-                        text: `${installing ? 'Could not install' : 'Could not uninstall'}: ${noticeText(error)} The recipe under “Do it yourself” does the same by hand.`,
+                        text: st(
+                            installing
+                                ? 'Could not install: {error} The recipe under “Do it yourself” does the same by hand.'
+                                : 'Could not uninstall: {error} The recipe under “Do it yourself” does the same by hand.',
+                            { error: noticeText(error) }
+                        ),
                         warning: true
                     };
                     this.display();
@@ -10839,10 +10948,14 @@ class NativeSettings extends PluginSettingTab {
             else
                 say(
                     now === 'here'
-                        ? `Installed on this computer, for this vault. ${OPEN_WITH_DEFAULT[system]}`
+                        ? st('Installed on this computer, for this vault. {next}', {
+                              next: st(OPEN_WITH_DEFAULT[system])
+                          })
                         : now === 'other'
-                          ? 'Installed on this computer, but made for another vault or an older key: files opened with it do not reach this vault. Install again to make it open them here.'
-                          : 'Not installed on this computer.'
+                          ? st(
+                                'Installed on this computer, but made for another vault or an older key: files opened with it do not reach this vault. Install again to make it open them here.'
+                            )
+                          : st('Not installed on this computer.')
                 );
             if (outcome?.warning) manual.open = true;
             // Drawn again after a press, the settings start at the top: what the press came to is brought into view.
@@ -10850,7 +10963,7 @@ class NativeSettings extends PluginSettingTab {
             row.addButton(control => {
                 buttons.push(control);
                 control
-                    .setButtonText(now === 'none' || now === null ? 'Install' : 'Install again')
+                    .setButtonText(st(now === 'none' || now === null ? 'Install' : 'Install again'))
                     .onClick(() => press(true));
                 if (now !== 'here') control.setCta();
             });
@@ -10858,12 +10971,12 @@ class NativeSettings extends PluginSettingTab {
                 row.addButton(control => {
                     buttons.push(control);
                     control
-                        .setButtonText('Uninstall')
+                        .setButtonText(st('Uninstall'))
                         .setWarning()
                         .onClick(() => press(false));
                 });
         };
-        say('Looking whether it is installed…');
+        say(st('Looking whether it is installed…'));
         void plugin.openWithState().then(draw, () => draw(null));
     }
 }
